@@ -33,7 +33,7 @@ To set up and run the portfolio locally:
 
 ### Prerequisites
 1. [Node.js](https://nodejs.org/) (for the frontend)
-2. [Python 3.10+](https://www.python.org/downloads/) (for the backend)
+2. [Python 3.9+](https://www.python.org/downloads/) (for the backend)
 3. PostgreSQL
 4. Redis
 
@@ -64,7 +64,7 @@ To set up and run the portfolio locally:
 #### Frontend Setup
 1. Navigate to the frontend directory:
    ```bash
-   cd ../old
+   cd ../frontend
    ```
 2. Install dependencies:
    ```bash
