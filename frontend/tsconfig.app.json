@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    /* General Settings */
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "moduleDetection": "force",
+    /* Alias Configuration */
+    // Adjust as needed depending on tsconfig.json location
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    /* Linting & Type Checking */
+    "strict": true,
+    // Strict type-checking rules
+    "noUnusedLocals": true,
+    // Fail on unused variables
+    "noUnusedParameters": true,
+    // Fail on unused function parameters
+    "noFallthroughCasesInSwitch": true,
+    // Ensure all switch cases are handled
+    "noUncheckedSideEffectImports": true,
+    // Detect potential side effects
+
+    /* Optional Compatibility */
+    "allowImportingTsExtensions": true,
+    // Allow .ts/.tsx in imports
+    "allowSyntheticDefaultImports": true,
+    // Smooth handling for default imports
+    "esModuleInterop": true,
+    // Helper for CommonJS/ESM interop
+    "resolveJsonModule": true
+    // Enable importing JSON files
+  }
+}
