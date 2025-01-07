@@ -16,7 +16,7 @@ def sanitize_input(value: str) -> str:
     import bleach
 
     return bleach.clean(
-        value, tags=[], attributes={}, styles=[]
+        value, tags=[], attributes={}, strip=True
     )  # Allow only plain text
 
 
@@ -98,12 +98,17 @@ class AboutMeSerializer(serializers.ModelSerializer):
 
 
 class ContactMeSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ContactMe
-        fields = ["id", "name", "email", "message", "created_at"]
+        fields = [
+            "id",
+            "name",
+            "email",
+            "company",
+            "message",
+            "created_at",
+        ]
 
-    @staticmethod
     def validate_email(self, value):
         """
         Validate the email field to ensure it’s not from a disposable email service.
@@ -114,7 +119,6 @@ class ContactMeSerializer(serializers.ModelSerializer):
             )
         return value
 
-    @staticmethod
     def validate_message(self, value):
         """
         Validate the 'message' field.

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+    <!-- Gradient Background -->
+    <defs>
+        <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5B0EBD"/>
+            <stop offset="100%" stop-color="#FF6D6D"/>
+        </linearGradient>
+    </defs>
+    <rect width="128" height="128" rx="8" ry="8" fill="url(#gradient)"/>
+
+    <!-- User Icon -->
+    <circle cx="28" cy="36" r="12" fill="#fff"/>
+
+    <!-- Text Wrapping Around Icon -->
+    <rect x="46" y="23" width="70" height="4" rx="2" fill="#fff"/>
+    <rect x="46" y="34" width="70" height="4" rx="2" fill="#fff"/>
+    <rect x="46" y="44" width="70" height="4" rx="2" fill="#fff"/>
+    <rect x="12" y="54" width="104" height="4" rx="2" fill="#fff"/>
+    <rect x="12" y="64" width="104" height="4" rx="2" fill="#fff"/>
+    <rect x="12" y="74" width="104" height="4" rx="2" fill="#fff"/>
+    <rect x="12" y="84" width="104" height="4" rx="2" fill="#fff"/>
+    <rect x="12" y="94" width="104" height="4" rx="2" fill="#fff"/>
+    <rect x="12" y="104" width="104" height="4" rx="2" fill="#fff"/>
+
+    <!-- Outer Border -->
+    <rect x="4" y="4" width="120" height="120" rx="8" ry="8" fill="none" stroke="#fff" stroke-width="1"/>
+</svg>

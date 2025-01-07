@@ -28,6 +28,12 @@ export type ContactFormData = {
     message: string;
 };
 
+// Define the type for the backend response (if any)
+export interface ContactFormResponse {
+    success: boolean;
+    message: string;
+}
+
 // interface for each planet
 export interface PlanetData {
     position: [number, number, number];

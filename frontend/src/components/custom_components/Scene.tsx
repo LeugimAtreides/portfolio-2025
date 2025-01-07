@@ -88,6 +88,7 @@ export const Scene: React.FC<{ navigate: (route: string) => void }> = ({ navigat
                         }
                     }}
                     ref={(mesh) => (planetRefs.current[planet.name] = mesh)} // Store mesh reference
+                    label={planet.route}
                 />
             ))}
 

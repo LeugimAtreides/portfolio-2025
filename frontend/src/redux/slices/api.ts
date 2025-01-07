@@ -21,9 +21,25 @@ export const apiSlice = createApi({
             query: (formData) => ({
                 url: "contact/", // Endpoint for contact form
                 method: "POST",
-                body: formData,
+                headers: {
+                    "Content-Type": "application/json", // Explicitly define content type
+                },
+                body: JSON.stringify(formData), // Convert data to JSON for backend compatibility
             }),
+            onQueryStarted: async (_, { queryFulfilled }) => {
+                try {
+                    // Wait for query to succeed
+                    await queryFulfilled;
+                    // Optionally, add success handling here
+                    console.log("Contact form submitted successfully!");
+                } catch (error) {
+                    // Handle errors gracefully
+                    console.error("Error submitting contact form:", error);
+                }
+            },
+
         }),
+
     }),
 });
 
@@ -32,4 +48,5 @@ export const {
     useFetchAboutMeQuery,
     useFetchProjectsQuery,
     useFetchBlogPostsQuery,
+    useSubmitContactFormMutation,
 } = apiSlice;

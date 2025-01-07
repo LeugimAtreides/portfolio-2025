@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
 import { RootState } from "@/redux/store.ts";
 import { useSelector } from "react-redux";
+import { Text } from "@react-three/drei";
 
 interface PlanetProps {
     initialPosition: [x: number, y: number, z: number]; // Initial position in orbit
@@ -12,6 +13,7 @@ interface PlanetProps {
     orbitRadius: number; // Radius of the orbit
     speed: number; // Speed of orbit
     glowColor: Color;
+    label: string;
 }
 
 // Wrap with forwardRef
@@ -23,6 +25,7 @@ export const Planet = React.memo(
         orbitRadius,
         speed,
         glowColor,
+        label = "label",
     }, ref) => {
         const meshRef = useRef<Mesh>(null!);
         const activePlanet = useSelector((state: RootState) => state.animation.activePlanet);
@@ -76,6 +79,18 @@ export const Planet = React.memo(
                     onPointerOver={(e) => e.object.scale.set(1.2, 1.2, 1.2)} // Enlarge on hover
                     onPointerOut={(e) => e.object.scale.set(1, 1, 1)} // Reset size
                 >
+                    {/* Floating Label */}
+                    <Text
+                        position={[0, 1.5, 0]} // Offset above the planet
+                        fontSize={0.3}
+                        color="cyan"
+                        anchorX="center"
+                        anchorY="middle"
+                        outlineWidth={0.01}
+                        outlineColor="black"
+                    >
+                        {label.toUpperCase()} {/* Label text in uppercase for a sci-fi feel */}
+                    </Text>
                     <sphereGeometry args={[0.5, 32, 32]}/>
                     <meshStandardMaterial map={planetTexture} emissive={glowColor} emissiveIntensity={0.2}/>
                 </animated.mesh>

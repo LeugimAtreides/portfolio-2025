@@ -98,15 +98,17 @@ class ContactMeAdmin(admin.ModelAdmin):
     Admin interface for the ContactMe model.
     """
 
-    list_display = ("name", "email", "created_at", "short_message")
+    list_display = ("name", "company", "email", "created_at", "short_message")
     list_filter = ("created_at",)  # Filter contacts by submission date
     search_fields = (
         "name",
+        "company",
         "email",
         "message",
     )  # Allow searching by name, email, or message
     readonly_fields = (
         "name",
+        "company",
         "email",
         "message",
         "created_at",
