@@ -1,6 +1,7 @@
 import type { ProjectData } from "@/types.ts";
 import React, { useState } from "react";
-import { Box, Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 
 interface ProjectCardProps {
     project: ProjectData;

@@ -24,7 +24,7 @@ from .serializers import (
 )
 
 
-class ContactFormThrottle(UserRateThrottle):
+class FormThrottle(UserRateThrottle):
     rate = "5/min"  # Allow 5 submissions per minute
 
 
@@ -53,16 +53,29 @@ class SubscriberViewSet(ModelViewSet):
 
 
 class BlogViewSet(ModelViewSet):
-    queryset: QuerySet[Blog] = Blog.objects.all()
+    queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+
+    def get_queryset(self):
+        blog_id = self.request.query_params.get("id")
+        if blog_id:
+            return Blog.objects.filter(id=blog_id)
+        return super().get_queryset()
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class BlogCommentViewSet(ModelViewSet):
     queryset: QuerySet[BlogComment] = BlogComment.objects.all()
+    throttle_classes = [FormThrottle]
     serializer_class = BlogCommentSerializer
 
     def get_queryset(self):
-        blog_id = self.request.query_params.get("blog_id")
+        blog_id = self.request.query_params.get("id")
+        print("blog_id", blog_id)
         if blog_id:
             return self.queryset.filter(blog_id=blog_id)
         return self.queryset
@@ -88,4 +101,4 @@ class AboutMeViewSet(ModelViewSet):
 class ContactMeViewSet(ModelViewSet):
     queryset: QuerySet[ContactMe] = ContactMe.objects.all()
     serializer_class = ContactMeSerializer
-    throttle_classes = [ContactFormThrottle]
+    throttle_classes = [FormThrottle]

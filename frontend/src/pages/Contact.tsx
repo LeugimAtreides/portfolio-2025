@@ -56,7 +56,7 @@ export const Contact: React.FC = () => {
     return (
         <Box
             maxWidth="800px"
-            margin="5vh auto"
+            margin="3vh auto"
             padding="6"
             bg="linear-gradient(135deg, rgba(0, 76, 153, 0.8), rgba(0, 153, 255, 0.3))"
             borderRadius="md"
@@ -68,7 +68,7 @@ export const Contact: React.FC = () => {
         >
             <Fieldset.Root size="lg">
                 <Stack>
-                    <Fieldset.Legend color="cyan.200" fontSize="lg" mb="4" textShadow="0px 0px 10px cyan">
+                    <Fieldset.Legend color="cyan.200" fontSize="lg" mb="2" textShadow="0px 0px 10px cyan">
                         Let's work together!
                     </Fieldset.Legend>
                     <Fieldset.HelperText color="gray.300">
@@ -145,7 +145,7 @@ export const Contact: React.FC = () => {
                     <Button
                         type="submit"
                         size="lg"
-                        marginTop={"50px"}
+                        marginTop={4}
                         loading={isSubmitting}
                         colorScheme="blue"
                         bg="cyan.600"

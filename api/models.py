@@ -52,14 +52,17 @@ class Blog(models.Model):
         return self.title
 
 
-# Blog Comments model
+# BLog Comments Model
 class BlogComment(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="comments")
+    name = models.CharField(
+        max_length=255, blank=True, null=True
+    )  # Field for the user's full name
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment on {self.blog.title}"
+        return f"Comment by {self.name} on {self.blog.title}"
 
 
 # About Me model

@@ -14,12 +14,22 @@ export type ProjectData = {
     url: string;
 };
 
-// Blog Post Type
-export type BlogPostData = {
+export interface BlogPostData {
+    id: number;
     title: string;
-    description: string;
-    image: string;
-};
+    content: string;
+    created_at: string; // ISO date string
+    updated_at: string; // ISO date string
+}
+
+export type BlogPostCommentData = {
+    id?: number;
+    blog: number;
+    comment: string;
+    name: string;
+    created_at?: string;
+}
+
 
 // Contact Form Type
 export type ContactFormData = {

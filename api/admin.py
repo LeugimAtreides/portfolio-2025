@@ -15,7 +15,7 @@ from .models import (
 
 # Blog Admin Form with CKEditor
 class BlogAdminForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditor5Widget())
+    content = forms.CharField(widget=CKEditor5Widget(config_name="extends"))
 
     class Meta:
         model = Blog
@@ -87,8 +87,8 @@ class BlogAdmin(admin.ModelAdmin):
 # BlogComment Admin
 @admin.register(BlogComment)
 class BlogCommentAdmin(admin.ModelAdmin):
-    list_display = ("blog", "comment", "created_at")
-    search_fields = ("blog__title", "comment")
+    list_display = ("blog", "name", "comment", "created_at")
+    search_fields = ("blog__title", "name", "comment")
 
 
 # Contact Me Admin

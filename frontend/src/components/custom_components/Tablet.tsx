@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, Flex, VStack } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button.tsx";
 
 interface TabletProps {
     title?: string; // Optional title for the tablet
@@ -10,6 +11,7 @@ interface TabletProps {
 
 export const Tablet: React.FC<TabletProps> = ({ title, children }) => {
     const { pathname } = useLocation();
+    const navigate = useNavigate();
 
     // Hide the Tablet on the homepage
     if(pathname === "/") {
@@ -38,7 +40,7 @@ export const Tablet: React.FC<TabletProps> = ({ title, children }) => {
                     alignItems="center"
                     width="100%"
                     height="90%"
-                    top={20}
+                    top={50}
                     position="absolute"
                 >
                     <Box
@@ -60,7 +62,6 @@ export const Tablet: React.FC<TabletProps> = ({ title, children }) => {
                                     textAlign="center"
                                     color="cyan.200"
                                     textShadow="0px 0px 10px cyan"
-                                    mb={1}
                                 >
                                     {title}
                                 </Box>
@@ -68,6 +69,22 @@ export const Tablet: React.FC<TabletProps> = ({ title, children }) => {
 
                             {/* Content Area */}
                             <Box>{children}</Box>
+
+                            {/* Back to Orrery Button */}
+                            <Flex justifyContent="center">
+                                <Button
+                                    onClick={() => navigate("/")}
+                                    bg="cyan.600"
+                                    color="white"
+                                    _hover={{
+                                        bg: "cyan.700",
+                                        boxShadow: "0px 0px 10px cyan",
+                                    }}
+                                    boxShadow="0px 0px 5px rgba(0, 153, 255, 0.5)"
+                                >
+                                    Back to Orrery
+                                </Button>
+                            </Flex>
 
                         </VStack>
                     </Box>

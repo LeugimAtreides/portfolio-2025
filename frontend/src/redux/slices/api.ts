@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AboutMeData, BlogPostData, ContactFormData, ProjectData } from "@/types.ts";
+import { AboutMeData, BlogPostCommentData, BlogPostData, ContactFormData, ProjectData } from "@/types.ts";
 
 // Define the shared API slice
 export const apiSlice = createApi({
@@ -8,6 +8,8 @@ export const apiSlice = createApi({
         baseUrl: import.meta.env.VITE_API_BASE_URL, // Dynamically load the base URL
     }),
     endpoints: (builder) => ({
+
+        // Queries
         fetchAboutMe: builder.query<AboutMeData[], void>({
             query: () => "about-me/", // Fetch About Me data
         }),
@@ -16,6 +18,41 @@ export const apiSlice = createApi({
         }),
         fetchBlogPosts: builder.query<BlogPostData[], void>({
             query: () => "blog-posts/", // Fetch Blog Posts data
+        }),
+        fetchBlogArticle: builder.query<BlogPostData, string>({
+            query: (blogId) => `blog-posts/?id=${blogId}`,
+            transformResponse: (response: BlogPostData) => {
+                if (Array.isArray(response)) {
+                    return response[0];
+                }
+                return response;
+            },
+        }),
+        fetchBlogPostComments: builder.query<BlogPostCommentData[], string>({
+            query: (blogId) => `blog-comments/?id=${blogId}`, // Fetch blog comments
+        }),
+
+        // Mutations
+        submitBlogCommentForm: builder.mutation<void, BlogPostCommentData>({
+            query: (formData) => ({
+                url: `blog-comments/`,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            }),
+            onQueryStarted: async (_, { queryFulfilled }) => {
+                try {
+                    // Wait for query to succeed
+                    await queryFulfilled;
+                    // Optionally, add success handling here
+                    console.log("Contact form submitted successfully!");
+                } catch (error) {
+                    // Handle errors gracefully
+                    console.error("Error submitting contact form:", error);
+                }
+            },
         }),
         submitContactForm: builder.mutation<void, ContactFormData>({
             query: (formData) => ({
@@ -48,5 +85,8 @@ export const {
     useFetchAboutMeQuery,
     useFetchProjectsQuery,
     useFetchBlogPostsQuery,
+    useFetchBlogArticleQuery,
+    useFetchBlogPostCommentsQuery,
+    useSubmitBlogCommentFormMutation,
     useSubmitContactFormMutation,
 } = apiSlice;

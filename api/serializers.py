@@ -76,14 +76,36 @@ class BlogSerializer(serializers.ModelSerializer):
 
 
 class BlogCommentSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the BlogComment model.
-    Converts BlogComment instances to JSON and validates incoming data.
-    """
-
     class Meta:
         model = BlogComment
-        fields = "__all__"
+        fields = [
+            "id",
+            "name",
+            "comment",
+            "created_at",
+        ]
+
+    def validate_name(self, value):
+        if len(value.split()) < 2:  # Check for at least two parts in the name
+            raise serializers.ValidationError("Please provide your full name.")
+        return value
+
+    def validate_comment(self, value):
+        """
+        Validate the 'message' field.
+        - Ensure the message is at least 10 characters long.
+        - Sanitize input for safety.
+        """
+        if len(value) < 10:
+            raise serializers.ValidationError(
+                "Message must be at least 10 characters long."
+            )
+
+        sanitized = sanitize_input(value)
+
+        if sanitized != value:
+            raise serializers.ValidationError("Comment contains unsafe characters.")
+        return sanitized
 
 
 class AboutMeSerializer(serializers.ModelSerializer):

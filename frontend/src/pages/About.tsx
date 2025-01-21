@@ -1,7 +1,9 @@
 import React from "react";
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Heading, Image, Text } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useFetchAboutMeQuery } from "@/redux/slices/api.ts";
+import { ErrorMessage } from "@/components/custom_components/ErrorMessage.tsx";
 
 export const About: React.FC = () => {
     const { data, isLoading, isError } = useFetchAboutMeQuery();
@@ -24,11 +26,7 @@ export const About: React.FC = () => {
     }
 
     if(isError || !data) {
-        return (
-            <Box textAlign="center" py="6">
-                <Text>Failed to load About Me content.</Text>
-            </Box>
-        );
+        return <ErrorMessage message={"Failed to load about me content"}/>;
     }
 
     return (
