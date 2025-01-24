@@ -64,7 +64,7 @@ To set up and run the portfolio locally:
 #### Frontend Setup
 1. Navigate to the frontend directory:
    ```bash
-   cd ../old
+   cd ../frontend
    ```
 2. Install dependencies:
    ```bash
@@ -80,7 +80,7 @@ To set up and run the portfolio locally:
 ## Usage
 
 ### Explore the Portfolio
-- Access the frontend at `http://localhost:3000`.
+- Access the frontend at `http://localhost:8008`.
 - The backend API is available at `http://localhost:8000`.
 
 ### Key Highlights
