@@ -1,5 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AboutMeData, BlogPostCommentData, BlogPostData, ContactFormData, ProjectData } from "@/types.ts";
+import {
+    AboutMeData,
+    BlogPostCommentData,
+    BlogPostData,
+    ContactFormData,
+    ProjectData,
+    ReferenceData,
+} from "@/types.ts";
 
 // Define the shared API slice
 export const apiSlice = createApi({
@@ -15,6 +22,9 @@ export const apiSlice = createApi({
         }),
         fetchProjects: builder.query<ProjectData[], void>({
             query: () => "projects/", // Fetch Portfolio data
+        }),
+        fetchReferences: builder.query<ReferenceData[], void>({
+            query: () => "references/",
         }),
         fetchBlogPosts: builder.query<BlogPostData[], void>({
             query: () => "blog-posts/", // Fetch Blog Posts data
@@ -84,6 +94,7 @@ export const apiSlice = createApi({
 export const {
     useFetchAboutMeQuery,
     useFetchProjectsQuery,
+    useFetchReferencesQuery,
     useFetchBlogPostsQuery,
     useFetchBlogArticleQuery,
     useFetchBlogPostCommentsQuery,

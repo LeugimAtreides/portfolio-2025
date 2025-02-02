@@ -3,10 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetActivePlanet, setActivePlanetStart, setActivePlanetSuccess } from "@/redux/slices/animationSlice";
 import { planets } from "@/constants/Planets";
+import { SystemStyleObject, Text } from "@chakra-ui/react";
 
 interface NavLinkProps {
     to: string; // The target route
     children: ReactNode; // The content of the link (can be text or other JSX)
+    _hover: SystemStyleObject;
 }
 
 export const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
@@ -18,7 +20,7 @@ export const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
 
     const handleClick = () => {
         const selectedPlanet = planets.find((planet) => planet.route === to.replace("/", ""));
-        if(selectedPlanet) {
+        if (selectedPlanet) {
             dispatch(setActivePlanetStart());
 
             setTimeout(() => {
@@ -33,22 +35,24 @@ export const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
     };
 
     return (
-        <span
+        <Text
             onClick={handleClick}
-            style={{
-                fontSize: "16px",
-                fontWeight: isActive ? "bold" : "normal", // Ensure only active links are bold
-                cursor: "pointer",
-                color: isActive ? "#2A5298" : "white", // Canaveral Blue for active links
-                textDecoration: isActive ? "underline" : "none", // Underline for active links
-                textDecorationColor: isActive ? "#2A5298" : "transparent", // Canaveral Blue underline
-                textDecorationThickness: "2px", // Thickness of the underline
-                // Explicitly override the default :visited styles
-                WebkitTextFillColor: "inherit", // Ensures color matches the `isActive` logic
-                WebkitTextStrokeWidth: "0",
+            fontSize="xl"
+            fontWeight={isActive ? "bold" : "normal"}
+            cursor="pointer"
+            color={isActive ? "#2A5298" : "white"}
+            textDecoration={isActive ? "underline" : "none"}
+            textDecorationColor={isActive ? "#2A5298" : "transparent"}
+            textDecorationThickness="2px"
+            WebkitTextFillColor="inherit"
+            WebkitTextStrokeWidth="0"
+            _hover={{
+                color: "#0ff",
+                textShadow: "0 0 8px #0ff",
+                transition: "0.2 ease-in-out",
             }}
         >
             {children}
-        </span>
+        </Text>
     );
 };

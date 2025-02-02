@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box } from "@chakra-ui/react";
 import { Orrery } from "@/components/custom_components/Orrery";
 import { useLocation, useParams } from "react-router-dom";
@@ -10,6 +10,7 @@ import { Projects } from "@/pages/Projects.tsx";
 import { Blog } from "@/pages/Blog.tsx";
 import { NotFoundPage } from "@/pages/NotFoundPage.tsx";
 import { BlogArticle } from "@/pages/BlogArticle.tsx";
+import { References } from "@/pages/References.tsx";
 
 const getTabletData = (route: string, blogId?: string) => {
     const baseRoute = route?.split("/")[1];
@@ -20,6 +21,8 @@ const getTabletData = (route: string, blogId?: string) => {
             return { title: "Contact Me", content: <Contact/> };
         case "projects":
             return { title: "My Projects", content: <Projects/> };
+        case "references":
+            return { title: "References", content: <References/> };
         case "blog":
             if (blogId) {
                 return { title: "Blog Article", content: <BlogArticle/> };
@@ -34,11 +37,6 @@ export const CentralHub: React.FC = () => {
     const { pathname } = useLocation();
     const params = useParams();
     const blogId = params?.blogId;
-
-    useEffect(() => {
-        console.log("params", params);
-    }, [params]);
-
     const tabletData = getTabletData(pathname, blogId);
 
     return (

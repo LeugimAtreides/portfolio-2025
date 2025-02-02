@@ -14,6 +14,16 @@ export type ProjectData = {
     url: string;
 };
 
+// Reference Type
+export type ReferenceData = {
+    id: number;
+    name: string;
+    job_title: string;
+    contact_info: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface BlogPostData {
     id: number;
     title: string;
