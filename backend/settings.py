@@ -9,18 +9,17 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
-import json
 import os
 from pathlib import Path
 
-import boto3
 import dj_database_url
-from decouple import config
+from decouple import AutoConfig, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file
+config = AutoConfig(search_path=BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -30,10 +29,8 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # General Settings
-DEBUG = config("DEBUG", default=False, cast=bool)
-ENVIRONMENT = config("ENVIRONMENT", default="production")
-
-ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="").split(",")
+DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
+ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="", cast=Csv())
 
 # timezone settings
 TIME_ZONE = "America/New_York"  # Eastern Time Zone
@@ -50,7 +47,6 @@ INSTALLED_APPS = [
     "api",
     "rest_framework",
     "django_ckeditor_5",
-    "storages",  # For AWS S3 support
     "corsheaders",  # For CORS support
 ]
 
@@ -88,52 +84,15 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database Settings
 DATABASES = {
     "default": dj_database_url.config(
-        default=config("DATABASE_URL", default=""),
-        conn_max_age=600,  # Keep connections open for 10 min
-        ssl_require=True,  # Force SSL in production
+        default=f"postgres://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_HOST')}:{config('DB_PORT')}/{config('DB_NAME')}"
     )
 }
 
-if not DEBUG:  # Use AWS Secrets Manager in production
-    secret_name = "portfolio-db-credentials"
-    region_name = "us-east-2"
-
-    client = boto3.client("secretsmanager", region_name=region_name)
-    response = client.get_secret_value(SecretId=secret_name)
-    secrets = json.loads(response["SecretString"])
-
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": secrets["DB_NAME"],
-            "USER": secrets["DB_USER"],
-            "PASSWORD": secrets["DB_PASSWORD"],
-            "HOST": secrets["DB_HOST"],
-            "PORT": secrets["DB_PORT"],
-            "OPTIONS": {"sslmode": "require"},
-        }
-    }
-
-# AWS S3 Configuration for Static & Media Files
-AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
-AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
-AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default=None)
-AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="us-east-1")
-
-# Only enable S3 storage in production
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-
-    # Configure URLs
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-else:
-    STATIC_URL = "/static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")
-    MEDIA_URL = "/media/"
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# Static and Media files settings
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -169,24 +128,12 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",  # Ensure this includes the directory containing custom.css
 ]
 
-# Static files
-STATIC_URL = "/static/"
-
 # CORS Settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8008",  # Frontend development server
-    "https://your-production-frontend.com",  # Production frontend
-]
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
 
 # CKEditor Configurations
-CKEDITOR_5_FILE_STORAGE = (
-    "storages.backends.s3boto3.S3Boto3Storage"
-    if not DEBUG
-    else "django.core.files.storage.FileSystemStorage"
-)
-
-CKEDITOR_5_FILE_UPLOAD_PERMISSION = "authenticated" if not DEBUG else "staff"
-
+CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
 CKEDITOR_5_CUSTOM_CSS = "/static/custom.css"
 
 customColorPalette = [
@@ -211,7 +158,6 @@ customColorPalette = [
     {"color": "hsl(210, 36%, 96%)", "label": "Off White"},  # Soft White
     {"color": "hsl(0, 0%, 10%)", "label": "Charcoal"},  # Charcoal Black
 ]
-
 
 CKEDITOR_5_CONFIGS = {
     "default": {
