@@ -29,7 +29,7 @@ services:
   - key: DJANGO_SECRET_KEY
     sync: false
   region: oregon
-buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-startCommand: gunicorn backend.wsgi:application
-autoDeploy: false
+  buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+  startCommand: gunicorn backend.wsgi:application
+  autoDeploy: false
 version: "1"
