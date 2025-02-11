@@ -8,7 +8,6 @@ services:
   envVars:
   - key: PYTHON_VERSION
     value: 3.9.6
-    sync: false
   - key: DJANGO_ALLOWED_HOSTS
     sync: false
   - key: DB_HOST
