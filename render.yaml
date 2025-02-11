@@ -1,7 +1,37 @@
+# Exported from Render on 2025-02-11T19:15:42Z
 services:
-  - type: web
-    name: portfolio-2025
-    env: python
-    pythonVersion: 3.9
-    buildCommand: "python -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python manage.py collectstatic --noinput"
-    startCommand: "gunicorn backend.wsgi:application"
+- type: web
+  name: portfolio-2025
+  runtime: python
+  repo: https://github.com/LeugimAtreides/portfolio-2025
+  plan: free
+  envVars:
+  - key: PYTHON_VERSION
+    value: 3.9.6
+    sync: false
+  - key: DJANGO_ALLOWED_HOSTS
+    sync: false
+  - key: DB_HOST
+    sync: false
+  - key: CORS_ALLOWED_ORIGINS
+    sync: false
+  - key: DB_PORT
+    sync: false
+  - key: DB_PASSWORD
+    sync: false
+  - key: DB_USER
+    sync: false
+  - key: DB_NAME
+    sync: false
+  - key: ENVIRONMENT
+    sync: false
+  - key: DJANGO_DEBUG
+    sync: false
+  - key: DJANGO_SECRET_KEY
+    sync: false
+  region: oregon
+  buildCommand: python -m venv venv && source venv/bin/activate && pip install
+    -r requirements.txt && python manage.py collectstatic --noinput
+  startCommand: gunicorn backend.wsgi:application
+  autoDeploy: false
+version: "1"
