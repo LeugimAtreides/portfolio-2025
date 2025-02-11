@@ -1,13 +1,13 @@
 # Exported from Render on 2025-02-11T19:15:42Z
 services:
-  - type: static
+  - type: web
+    runtime: static
     name: portfolio-2025-frontend
     repo: https://github.com/LeugimAtreides/portfolio-2025
     branch: main        # Change this if you use a different branch
     plan: free
     rootDir: frontend   # This tells Render that all frontend code is in the `frontend` directory.
     buildCommand: npm install && npm run build
-    publishPath: dist   # The folder where Vite outputs the production build.
     autoDeploy: true   # Or true if you want auto deployments.
     envVars:
     - key: VITE_API_BASE_URL
