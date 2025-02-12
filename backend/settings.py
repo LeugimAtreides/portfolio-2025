@@ -89,6 +89,14 @@ DATABASES = {
     )
 }
 
+EXTERNAL_DATABASE_URL = config("EXTERNAL_DATABASE_URL", default=None)
+
+# Production database settings
+if EXTERNAL_DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=EXTERNAL_DATABASE_URL)
+    }
+
 # Static and Media files settings
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
