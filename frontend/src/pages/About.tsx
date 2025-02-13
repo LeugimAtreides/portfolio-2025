@@ -32,7 +32,7 @@ export const About: React.FC = () => {
     return (
         <Box
             maxWidth="800px"
-            maxHeight="80vh" // Prevent tablet from exceeding the viewport
+            maxHeight="60vh" // Prevent tablet from exceeding the viewport
             margin="5vh auto" // Add vertical margin to prevent cutting off
             padding="6"
             bg="linear-gradient(135deg, rgba(0, 76, 153, 0.8), rgba(0, 153, 255, 0.3))"
@@ -40,14 +40,14 @@ export const About: React.FC = () => {
             boxShadow="0px 0px 20px rgba(0, 153, 255, 0.6)"
             border="1px solid rgba(0, 153, 255, 0.5)"
             overflowY="auto" // Enable scrolling for content overflow
-            lineHeight="1.8"
+            lineHeight="1.3"
             position="relative"
         >
             {/* Floating Image */}
             <Image
                 src={data[0].image}
                 alt={data[0].title}
-                boxSize="200px"
+                boxSize="150px"
                 borderRadius="md"
                 objectFit="cover"
                 float="left"
