@@ -16,13 +16,13 @@ Welcome to my Portfolio-2025! This project showcases my abilities as a Senior So
 ### Backend
 - **Python and Django**: A robust backend built with Django, showcasing RESTful API design and scalability.
 - **PostgreSQL Database**: Ensures reliable and efficient data storage.
-- **Task Scheduling with Celery**: Manages asynchronous tasks such as sending out weekly blog digests to subscribers.
-- **Redis Integration**: Used as a caching layer to enhance performance and for Celery task queue management.
+- **Task Scheduling with Celery** (COMING SOON): Manages asynchronous tasks such as sending out weekly blog digests to subscribers.
+- **Redis Integration** (COMING SOON): Used as a caching layer to enhance performance and for Celery task queue management.
 
 ### Deployment
-- **Cloud Setup**: Fully deployed on the cloud for reliability and scalability (e.g., AWS, Azure, or Google Cloud Platform).
+- **Cloud Setup**: Fully deployed on the cloud for reliability and scalability.
 
-### Blog Feature
+### Blog Feature (COMING SOON)
 - Weekly blog content, dynamically managed via the Django admin panel, with subscription functionality for users.
 
 ---
