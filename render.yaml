@@ -1,35 +1,35 @@
-# Exported from Render on 2025-02-11T19:15:42Z
+# Render Blueprint — Django API (portfolio-2025).
+# Put secrets in the Render Dashboard → Environment, not in git.
+# https://render.com/docs/blueprint-spec
 services:
   - type: web
     name: portfolio-2025
     runtime: python
     repo: https://github.com/LeugimAtreides/portfolio-2025
     plan: free
-    envVars:
-    - key: PYTHON_VERSION
-      value: 3.9.6
-    - key: DJANGO_ALLOWED_HOSTS
-      sync: false
-    - key: DB_HOST
-      sync: false
-    - key: CORS_ALLOWED_ORIGINS
-      sync: false
-    - key: DB_PORT
-      sync: false
-    - key: DB_PASSWORD
-      sync: false
-    - key: DB_USER
-      sync: false
-    - key: DB_NAME
-      sync: false
-    - key: ENVIRONMENT
-      sync: false
-    - key: DJANGO_DEBUG
-      sync: false
-    - key: DJANGO_SECRET_KEY
-      sync: false
     region: oregon
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    releaseCommand: python manage.py migrate --noinput
     startCommand: gunicorn backend.wsgi:application
     autoDeploy: false
-version: "1"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.10"
+      - key: DJANGO_DEBUG
+        sync: false
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: EXTERNAL_DATABASE_URL
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_STORAGE_BUCKET_NAME
+        sync: false
+      - key: AWS_S3_REGION_NAME
+        sync: false

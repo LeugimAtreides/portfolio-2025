@@ -140,8 +140,15 @@ STATICFILES_DIRS = [
 # CORS Settings
 CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
 
-# CKEditor Configurations
-CKEDITOR_5_FILE_STORAGE = config("CKEDITOR_5_FILE_STORAGE")
+# CKEditor Configurations (match media storage: local when DEBUG, S3 when not)
+CKEDITOR_5_FILE_STORAGE = config(
+    "CKEDITOR_5_FILE_STORAGE",
+    default=(
+        "django.core.files.storage.FileSystemStorage"
+        if DEBUG
+        else "storages.backends.s3boto3.S3Boto3Storage"
+    ),
+)
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
 CKEDITOR_5_CUSTOM_CSS = "/static/custom.css"
 
