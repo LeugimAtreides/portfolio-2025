@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button.tsx";
 

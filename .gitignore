@@ -69,3 +69,4 @@ dist-ssr
 amplify_outputs*
 amplifyconfiguration*
 .env
+.venv

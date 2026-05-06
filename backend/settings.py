@@ -83,19 +83,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
-# Database Settings
-DATABASES = {
-    "default": dj_database_url.config(
-        default=f"postgres://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_HOST')}:{config('DB_PORT')}/{config('DB_NAME')}"
-    )
-}
-
-EXTERNAL_DATABASE_URL = config("EXTERNAL_DATABASE_URL", default=None)
-
-# Production database settings
-if EXTERNAL_DATABASE_URL:
+# Database — Supabase (or any DATABASE_URL) when set; else local Postgres via DB_*
+_external_db = config("EXTERNAL_DATABASE_URL", default="").strip()
+if _external_db:
+    DATABASES = {"default": dj_database_url.config(default=_external_db)}
+else:
     DATABASES = {
-        'default': dj_database_url.config(default=EXTERNAL_DATABASE_URL)
+        "default": dj_database_url.config(
+            default=(
+                f"postgres://{config('DB_USER')}:{config('DB_PASSWORD')}"
+                f"@{config('DB_HOST')}:{config('DB_PORT')}/{config('DB_NAME')}"
+            )
+        )
     }
 
 # Static and Media files settings

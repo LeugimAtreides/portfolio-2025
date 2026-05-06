@@ -19,7 +19,7 @@
     "jsx": "react-jsx",
     "moduleDetection": "force",
     /* Alias Configuration */
-    // Adjust as needed depending on tsconfig.json location
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*"
