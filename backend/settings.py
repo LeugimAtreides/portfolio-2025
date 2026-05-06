@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import urllib.parse
 from pathlib import Path
 
 import dj_database_url
@@ -137,11 +138,29 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",  # Ensure this includes the directory containing custom.css
 ]
 
+
+def _origins_strip_path(origins: list[str]) -> list[str]:
+    """CORS/CSRF values must be scheme://host[:port] only — no path (see corsheaders E014)."""
+    cleaned: list[str] = []
+    for raw in origins:
+        raw = (raw or "").strip()
+        if not raw:
+            continue
+        parsed = urllib.parse.urlparse(raw)
+        if parsed.scheme and parsed.netloc:
+            cleaned.append(f"{parsed.scheme}://{parsed.netloc}")
+        else:
+            cleaned.append(raw)
+    return cleaned
+
+
 # CORS Settings
-CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
+CORS_ALLOWED_ORIGINS = _origins_strip_path(config("CORS_ALLOWED_ORIGINS", cast=Csv()))
 
 # HTTPS origins for CSRF (e.g. admin POSTs behind a proxy). Comma-separated, include scheme.
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+CSRF_TRUSTED_ORIGINS = _origins_strip_path(
+    config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+)
 
 # CKEditor Configurations (match media storage: local when DEBUG, S3 when not)
 CKEDITOR_5_FILE_STORAGE = config(
