@@ -8,11 +8,15 @@ import {
     ReferenceData,
 } from "@/types.ts";
 
+// Trailing slash required: baseUrl "https://host/api" + "about-me/" must not become "https://host/apiabout-me/"
+const envBase = import.meta.env.VITE_API_BASE_URL ?? "";
+const apiBaseUrl = envBase.endsWith("/") ? envBase : `${envBase}/`;
+
 // Define the shared API slice
 export const apiSlice = createApi({
     reducerPath: "api", // Single reducer for all API interactions
     baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_API_BASE_URL, // Dynamically load the base URL
+        baseUrl: apiBaseUrl,
     }),
     endpoints: (builder) => ({
 

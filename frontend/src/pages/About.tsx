@@ -9,7 +9,7 @@ export const About: React.FC = () => {
     const { data, isLoading, isError } = useFetchAboutMeQuery();
     const navigate = useNavigate();
 
-    if(isLoading) {
+    if (isLoading) {
         return (
             <Box
                 maxWidth="800px"
@@ -25,9 +25,19 @@ export const About: React.FC = () => {
         );
     }
 
-    if(isError || !data) {
-        return <ErrorMessage message={"Failed to load about me content"}/>;
+    if (isError || data == null) {
+        return (
+            <ErrorMessage message="Failed to load about me content" />
+        );
     }
+
+    if (data.length === 0) {
+        return (
+            <ErrorMessage message="No about me content yet — add one in Django admin (About me section)." />
+        );
+    }
+
+    const about = data[0];
 
     return (
         <Box
@@ -44,10 +54,10 @@ export const About: React.FC = () => {
             position="relative"
         >
             {/* Floating Image */}
-            {data[0].image ? (
+            {about.image ? (
                 <Image
-                    src={data[0].image}
-                    alt={data[0].title}
+                    src={about.image}
+                    alt={about.title}
                     boxSize="150px"
                     borderRadius="md"
                     objectFit="cover"
@@ -67,12 +77,12 @@ export const About: React.FC = () => {
                 color="cyan.200"
                 textShadow="0px 0px 10px cyan"
             >
-                {data[0].title}
+                {about.title}
             </Heading>
 
             {/* Content */}
             <Text fontSize="sm" textAlign="justify" color="gray.300">
-                {data[0].content}
+                {about.content}
             </Text>
 
             {/* Clear Floated Elements */}
