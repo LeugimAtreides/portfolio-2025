@@ -2,7 +2,7 @@
 export type AboutMeData = {
     title: string;
     content: string;
-    image: string;
+    image: string | null;
 };
 
 // Project Type
@@ -10,7 +10,7 @@ export type ProjectData = {
     id: number;
     title: string;
     description: string;
-    image: string;
+    image: string | null;
     url: string;
 };
 

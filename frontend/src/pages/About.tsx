@@ -44,17 +44,19 @@ export const About: React.FC = () => {
             position="relative"
         >
             {/* Floating Image */}
-            <Image
-                src={data[0].image}
-                alt={data[0].title}
-                boxSize="150px"
-                borderRadius="md"
-                objectFit="cover"
-                float="left"
-                marginRight="16px"
-                marginBottom="8px"
-                boxShadow="md"
-            />
+            {data[0].image ? (
+                <Image
+                    src={data[0].image}
+                    alt={data[0].title}
+                    boxSize="150px"
+                    borderRadius="md"
+                    objectFit="cover"
+                    float="left"
+                    marginRight="16px"
+                    marginBottom="8px"
+                    boxShadow="md"
+                />
+            ) : null}
 
             {/* Title */}
             <Heading

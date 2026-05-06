@@ -9,6 +9,8 @@ This module includes serializers for the following models:
 - BlogComment
 """
 
+from django.conf import settings
+
 from rest_framework import serializers
 
 
@@ -31,6 +33,45 @@ from .models import (
 )
 
 
+def _file_url(request, file_field) -> str | None:
+    """Browser-ready URL for ImageField/FileField (S3 absolute URL or local absolute)."""
+    if not file_field or not getattr(file_field, "name", None):
+        return None
+    url = file_field.url
+    if url.startswith(("http://", "https://")):
+        return url
+    if url.startswith("/") and settings.MEDIA_URL.startswith("http"):
+        rel = url.lstrip("/")
+        if rel.startswith("media/"):
+            rel = rel[6:]
+        return f"{settings.MEDIA_URL.rstrip('/')}/{rel}"
+    if request is not None:
+        return request.build_absolute_uri(url)
+    return url
+
+
+def _rewrite_blog_embedded_media(html: str) -> str:
+    """Point CKEditor /media/ and dev URLs at production MEDIA_URL (S3) in HTML."""
+    if not html or settings.DEBUG:
+        return html
+    base = settings.MEDIA_URL
+    if not base.endswith("/"):
+        base = f"{base}/"
+    html = html.replace('src="/media/', f'src="{base}')
+    html = html.replace("src='/media/", f"src='{base}")
+    html = html.replace('href="/media/', f'href="{base}')
+    html = html.replace("href='/media/", f"href='{base}")
+    for host in (
+        "http://127.0.0.1:8000/media/",
+        "http://localhost:8000/media/",
+    ):
+        html = html.replace(f'src="{host}', f'src="{base}')
+        html = html.replace(f"src='{host}", f"src='{base}")
+        html = html.replace(f'href="{host}', f'href="{base}')
+        html = html.replace(f"href='{host}", f"href='{base}")
+    return html
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     """
     Serializer for the Project model.
@@ -40,6 +81,11 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = "__all__"
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["image"] = _file_url(self.context.get("request"), instance.image)
+        return data
 
 
 class ReferenceSerializer(serializers.ModelSerializer):
@@ -73,6 +119,13 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = "__all__"
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        content = data.get("content")
+        if isinstance(content, str):
+            data["content"] = _rewrite_blog_embedded_media(content)
+        return data
 
 
 class BlogCommentSerializer(serializers.ModelSerializer):
@@ -117,6 +170,11 @@ class AboutMeSerializer(serializers.ModelSerializer):
     class Meta:
         model = AboutMe
         fields = "__all__"
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["image"] = _file_url(self.context.get("request"), instance.image)
+        return data
 
 
 class ContactMeSerializer(serializers.ModelSerializer):

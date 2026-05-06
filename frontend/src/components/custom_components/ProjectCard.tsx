@@ -33,15 +33,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 alignItems="flex-start"
             >
                 {/* Project Image */}
-                <Image
-                    src={project.image}
-                    alt={project.title}
-                    borderRadius="md"
-                    width="150px" // Fixed width
-                    height="150px" // Fixed height
-                    objectFit="cover" // Ensure proper cropping
-                    flexShrink={0}
-                />
+                {project.image ? (
+                    <Image
+                        src={project.image}
+                        alt={project.title}
+                        borderRadius="md"
+                        width="150px" // Fixed width
+                        height="150px" // Fixed height
+                        objectFit="cover" // Ensure proper cropping
+                        flexShrink={0}
+                    />
+                ) : null}
 
                 {/* Project Content */}
                 <Box flex="1">
