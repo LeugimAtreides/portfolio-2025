@@ -140,6 +140,9 @@ STATICFILES_DIRS = [
 # CORS Settings
 CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
 
+# HTTPS origins for CSRF (e.g. admin POSTs behind a proxy). Comma-separated, include scheme.
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+
 # CKEditor Configurations (match media storage: local when DEBUG, S3 when not)
 CKEDITOR_5_FILE_STORAGE = config(
     "CKEDITOR_5_FILE_STORAGE",
