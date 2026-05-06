@@ -53,7 +53,7 @@ export const Tablet: React.FC<TabletProps> = ({ title, children }) => {
                         padding="6"
                         overflow="hidden"
                     >
-                        <VStack gap="1" align="stretch">
+                        <VStack gap="3" align="stretch">
                             {/* Optional Title */}
                             {title && (
                                 <Box
